@@ -1,0 +1,80 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl AdminGroup:admin,read,write,delete,revert ReadwriteGroup:read,write All:read
+#format wiki
+#language zh
+= Course Name: Advanced Operating Systems (Spring Semester, 2015) =
+----
+ . [[TableOfContents(4)]]
+
+== INTRO ==
+80240442 is a graduate seminar on research in  system software. The goal of the class is to get the students to understand the internal of system software, such as performance optimization for multicore architecture, system security, verified system, etc. The structure of the class will consist of students presenting research papers during lecture, and students working on  significant research projects. We expect students to start working or repeating on the existed great research projects in the first week or two, and continue for the entire semester, culminating in a draft research paper. Examples of project include building commuter, kint, , FP-Miner, jitk, ucore -- simple OS kernel, etc.
+
+== SCHEDULING ==
+Tuesday  13:30pm – 15:10pm 6A407 room, 6th Teaching Building
+
+== STAFF ==
+ * Chen, Yu ( yuchen@tsinghua.edu.cn )
+ * Office:  3-106 room, FIT Building,
+ * Office hours:         and by appointments
+
+== TA ==
+ *  Junjie Mao 
+
+== TEXT BOOK ==
+No text book
+
+== LECTURES ==
+ * 1            Course overview + Performance+Security+Correction
+ * 2            OS Architecture
+ * 3            Virtual Machine
+ * 4            Building Real OS—uCore, Linux 
+ * 5            Overview of OS Optimization for Multicore
+ * 6            Paper&Project: The Scalable Commutativity Rule & Commuter
+ * 7            Paper&Project: TCP/IP & FastSocket
+ * 8            Midterm Exam 
+ * 9            Overview of OS Security
+ * 10           Paper&Project:  Integer Security for System & Kint
+ * 11           Paper&Project:  Lang, Library, Device Driver & RUST ,KLEE, PF-Miner 
+ * 12           Overview of Correction on System
+ * 13           Paper&Project:  Verified OS & SeL4
+ * 14           Paper&Project: Verified Component & JITK
+ * 15-16      Final Exam
+
+== PROJECT ==
+=== REPEAT ===
+ * Try to read papers about  commuter, kint, , FP-Miner, jitk, and repeat building and testing these research projects. Give your technique report and testing results.
+
+=== DIY ===
+  * Finish OS labs : ucore -- simple OS kernel, in www.github.com/chyyuu/ucore_lab
+
+== READING LIST ==
+=== Performance ===
+ 1. http://pdos.csail.mit.edu/commuter
+ 1. https://github.com/fastos/fastsocket
+ 1. http://pdos.csail.mit.edu/mosbench/
+ 
+=== System Security ===
+ 1. http://css.csail.mit.edu/kint/
+ 1. http://web.stanford.edu/~engler/klee-osdi-2008.pdf
+ 1. http://ieeexplore.ieee.org/xpl/articleDetails.jsp?arnumber=6899198&filter%3DAND%28p_IS_Number%3A6899181%29
+
+=== Verified System ===
+ 1. http://www.sigops.org/sosp/sosp09/papers/klein-sosp09.pdf
+ 1. http://pdos.csail.mit.edu/papers/jitk:osdi14.pdf
+ 1. http://css.csail.mit.edu/6.888/2015/
+
+== GRADING ==
+ 1. Reading Paper and Reating the work from the paper : 60 %
+ 1. DIY project : 40%
+
+== LECTURES ==
+ * [https://github.com/chyyuu/aos-2015/tree/master/lectures: lectures in github]
+
+== READING-REPORTS ==
+ * [https://github.com/chyyuu/aos-2015/tree/master/reading-reports: reports in github]
+
+== LABS ==
+ * [https://github.com/chyyuu/aos-2015/tree/master/labs: labs in github]
