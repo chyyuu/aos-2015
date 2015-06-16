@@ -1,0 +1,3 @@
+kernel/sound/pci/hda/snd-hda-codec.ko
+kernel/sound/pci/hda/snd-hda-controller.ko
+kernel/sound/pci/hda/snd-hda-intel.ko

@@ -1,0 +1,97 @@
+wget http://119.75.218.70
+
+normal:
+5148 - 5036 = 112kb
+
+smalltcpstack:
+5132 - 5032 = 100kb
+
+smalltcpstack2:
+5144 - 5040 = 104kb
+ 
+CONFIG_BASE_SMALL  don't changed
+fastopen don't changed
+
+tcp_metrics.o tcp_offload.o tcp_fastopen.o
+SNMP-Simple Network Management Protocol (SNMP) is an "Internet-standard protocol for managing devices on IP networks"
+
+
+git://git.kernel.org/pub/scm/linux/kernel/git/ak/linux-misc net/debloat-3.14
+
+The default maximum Linux TCP buffer sizes are way too small. TCP memory is calculated automatically based on system memory; you can find the actual values by typing the following commands:
+$ cat /proc/sys/net/ipv4/tcp_mem
+
+The default and maximum amount for the receive socket memory:
+$ cat /proc/sys/net/core/rmem_default
+$ cat /proc/sys/net/core/rmem_max
+
+The default and maximum amount for the send socket memory:
+$ cat /proc/sys/net/core/wmem_default
+$ cat /proc/sys/net/core/wmem_max
+
+The maximum amount of option memory buffers:
+$ cat /proc/sys/net/core/optmem_max
+
+[ipv4]
+diff -bBq ./linux-4.0.4/net/ipv4/ ./smalltcpstack/net/debloat/net/ipv4/
+
+diff -bBc ./linux-4.0.4/net/ipv4/fib_frontend.c ./smalltcpstack/net/debloat/net/ipv4/fib_frontend.c
+diff -bBc ./linux-4.0.4/net/ipv4/geneve.c ./smalltcpstack/net/debloat/net/ipv4/geneve.c
+diff -bBc ./linux-4.0.4/net/ipv4/inet_connection_sock.c ./smalltcpstack/net/debloat/net/ipv4/inet_connection_sock.c
+diff -bBc ./linux-4.0.4/net/ipv4/inet_diag.c ./smalltcpstack/net/debloat/net/ipv4/inet_diag.c
+diff -bBc ./linux-4.0.4/net/ipv4/ip_forward.c ./smalltcpstack/net/debloat/net/ipv4/ip_forward.c
+diff -bBc ./linux-4.0.4/net/ipv4/ipmr.c ./smalltcpstack/net/debloat/net/ipv4/ipmr.c
+diff -bBc ./linux-4.0.4/net/ipv4/ping.c ./smalltcpstack/net/debloat/net/ipv4/ping.c
+diff -bBc ./linux-4.0.4/net/ipv4/route.c ./smalltcpstack/net/debloat/net/ipv4/route.c
+diff -bBc ./linux-4.0.4/net/ipv4/tcp_cong.c ./smalltcpstack/net/debloat/net/ipv4/tcp_cong.c
+diff -bBc ./linux-4.0.4/net/ipv4/tcp_cubic.c ./smalltcpstack/net/debloat/net/ipv4/tcp_cubic.c
+diff -bBc ./linux-4.0.4/net/ipv4/tcp_ipv4.c ./smalltcpstack/net/debloat/net/ipv4/tcp_ipv4.c
+diff -bBc ./linux-4.0.4/net/ipv4/tcp_input.c ./smalltcpstack/net/debloat/net/ipv4/tcp_input.c
+diff -bBc ./linux-4.0.4/net/ipv4/tcp_output.c ./smalltcpstack/net/debloat/net/ipv4/tcp_output.c
+diff -bBc ./linux-4.0.4/net/ipv4/xfrm4_output.c ./smalltcpstack/net/debloat/net/ipv4/xfrm4_output.c
+diff -bBc ./linux-4.0.4/net/ipv4/netfilter/ip_tables.c ./smalltcpstack/net/debloat/net/ipv4/netfilter/ip_tables.c
+
+
+changed files in ipv4:
+Files ./linux-4.0.4/net/ipv4/fib_frontend.c and ./smalltcpstack/net/debloat/net/ipv4/fib_frontend.c differ
+Files ./linux-4.0.4/net/ipv4/geneve.c and ./smalltcpstack/net/debloat/net/ipv4/geneve.c differ
+Files ./linux-4.0.4/net/ipv4/inet_connection_sock.c and ./smalltcpstack/net/debloat/net/ipv4/inet_connection_sock.c differ
+Files ./linux-4.0.4/net/ipv4/inet_diag.c and ./smalltcpstack/net/debloat/net/ipv4/inet_diag.c differ
+Files ./linux-4.0.4/net/ipv4/ip_forward.c and ./smalltcpstack/net/debloat/net/ipv4/ip_forward.c differ
+Files ./linux-4.0.4/net/ipv4/ipmr.c and ./smalltcpstack/net/debloat/net/ipv4/ipmr.c differ
+Files ./linux-4.0.4/net/ipv4/ping.c and ./smalltcpstack/net/debloat/net/ipv4/ping.c differ
+Files ./linux-4.0.4/net/ipv4/route.c and ./smalltcpstack/net/debloat/net/ipv4/route.c differ
+Files ./linux-4.0.4/net/ipv4/tcp_cong.c and ./smalltcpstack/net/debloat/net/ipv4/tcp_cong.c differ
+Files ./linux-4.0.4/net/ipv4/tcp_cubic.c and ./smalltcpstack/net/debloat/net/ipv4/tcp_cubic.c differ
+Files ./linux-4.0.4/net/ipv4/tcp_input.c and ./smalltcpstack/net/debloat/net/ipv4/tcp_input.c differ
+Files ./linux-4.0.4/net/ipv4/tcp_ipv4.c and ./smalltcpstack/net/debloat/net/ipv4/tcp_ipv4.c differ
+Files ./linux-4.0.4/net/ipv4/tcp_output.c and ./smalltcpstack/net/debloat/net/ipv4/tcp_output.c differ
+Files ./linux-4.0.4/net/ipv4/xfrm4_output.c and ./smalltcpstack/net/debloat/net/ipv4/xfrm4_output.c differ
+Files ./linux-4.0.4/net/ipv4/netfilter/ip_tables.c and ./smalltcpstack/net/debloat/net/ipv4/netfilter/ip_tables.c differ
+
+
+[core]
+diff -bBq ./linux-4.0.4/net/core/ ./smalltcpstack/net/debloat/net/core/
+
+changed files in core:
+Files ./linux-4.0.4/net/core/dev.c and ./smalltcpstack/net/debloat/net/core/dev.c differ
+Files ./linux-4.0.4/net/core/fib_rules.c and ./smalltcpstack/net/debloat/net/core/fib_rules.c differ
+Files ./linux-4.0.4/net/core/net_namespace.c and ./smalltcpstack/net/debloat/net/core/net_namespace.c differ
+Files ./linux-4.0.4/net/core/rtnetlink.c and ./smalltcpstack/net/debloat/net/core/rtnetlink.c differ
+Files ./linux-4.0.4/net/core/skbuff.c and ./smalltcpstack/net/debloat/net/core/skbuff.c differ
+Files ./linux-4.0.4/net/core/sock.c and ./smalltcpstack/net/debloat/net/core/sock.c differ
+Files ./linux-4.0.4/net/core/sysctl_net_core.c and ./smalltcpstack/net/debloat/net/core/sysctl_net_core.c differ
+
+[netlink]
+diff -bBq ./linux-4.0.4/net/netlink/ ./smalltcpstack/net/debloat/net/netlink/
+
+changed files in netlink:
+Files ./linux-4.0.4/net/netlink/af_netlink.c and ./smalltcpstack/net/debloat/net/netlink/af_netlink.c differ
+
+
+[net]
+diff -bBq ./linux-4.0.4/net/ ./smalltcpstack/net/debloat/net/
+
+changed files in net:
+Files ./linux-4.0.4/net/socket.c and ./smalltcpstack/net/debloat/net/socket.c differ
+Files ./linux-4.0.4/net/compat.c and ./smalltcpstack/net/debloat/net/compat.c differ

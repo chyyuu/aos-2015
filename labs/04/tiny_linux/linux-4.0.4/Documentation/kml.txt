@@ -1,0 +1,170 @@
+Kernel Mode Linux (http://web.yl.is.s.u-tokyo.ac.jp/~tosh/kml)
+Copyright 2004,2005 Toshiyuki Maeda
+
+
+Introduction:
+
+Kernel Mode Linux is a technology which enables us to execute user programs
+in kernel mode. In Kernel Mode Linux, user programs can be executed as
+user processes that have the privilege level of kernel mode. The benefit
+of executing user programs in kernel mode is that the user programs can
+access kernel address space directly.  For example, user programs can invoke
+system calls very fast because it is unnecessary to switch between a kernel
+mode and user-mode by using costly software interruptions or context
+switches. In addition, user programs are executed as ordinary processes
+(except for their privilege level, of course), so scheduling and paging are
+performed as usual, unlike kernel modules.
+
+Although it seems dangerous to let user programs access a kernel directly,
+safety of the kernel can be ensured by several means: static type checking
+technology, proof-carrying code technology, software fault isolation, and
+so forth. For proof of concept, we are developing a system which is based
+on the combination of Kernel Mode Linux and Typed Assembly Language, TAL.
+(TAL can ensure safety of programs through its type checking and the type
+checking can be done at machine binary level. For more information about
+TAL, see http://www.cs.cornell.edu/talc)
+
+Currently, IA-32 and AMD64 architecture are supported.
+
+
+Limitation:
+User processes executed in kernel mode should obey the following limitations.
+Otherwise, your system will be in an undefined state. In the worst-case
+scenario, your system will crash.
+
+- On IA-32, user processes executed in kernel mode should not modify their
+  CS, DS, FS and SS register.
+
+- On AMD64, user processes executed in kernel mode should not modify their
+  GS register.
+
+In addition, on AMD64, IA-32 binaries cannot be executed in kernel mode.
+
+
+Instruction:
+
+To enable Kernel Mode Linux, say Y in Kernel Mode Linux field of kernel
+configuration, build and install the kernel, and reboot your machine. Then,
+all executables under the "/trusted" directory are executed in kernel mode
+in the current Kernel Mode Linux implementation. For example, to execute a
+program named "cat" in kernel mode, copy the program to "/trusted" and
+execute it as follows:
+
+% /trusted/cat
+
+
+Implementation Notes for IA-32:
+
+To execute user programs in kernel mode, Kernel Mode Linux has a special
+start_thread (start_kernel_thread) routine, which is called in processing
+execve(2) and sets registers of a user process to specified initial values.
+The original start_thread routine sets CS segment register to __USER_CS.
+The start_kernel_thread routine sets the CS register to __KERNEL_CS. Thus,
+a user program is started as a user process executed in kernel mode.
+
+The biggest problem of implementing Kernel Mode Linux is a stack starvation
+problem. Let's assume that a user program is executed in kernel mode and
+it causes a page fault on its user stack. To generate a page fault exception,
+an IA-32 CPU tries to push several registers (EIP, CS, and so on) to the same
+user stack because the program is executed in kernel mode and the IA-32
+CPU doesn't switch its stack to a kernel stack. Therefore, the IA-32 CPU
+cannot push the registers and generate a double fault exception and fail
+again. Finally, the IA-32 CPU gives up and reset itself. This is the stack
+starvation problem. 
+
+To solve the stack starvation problem, we use the IA-32 hardware task mechanism
+to handle exceptions. By using the mechanism, IA-32 CPU doesn't push the
+registers to its stack. Instead, the CPU switches an execution context to
+another special context. Therefore, the stack starvation problem doesn't occur.
+However, it is costly to handle all exceptions by the IA-32 task mechanism.
+So, in current Kernel Mode Linux implementation, double fault exceptions are
+handled by the IA-32 task. A page fault on a memory stack is not so often, so
+the cost of the IA-32 task mechanism is negligible for usual programs.
+In addition, non-maskable interrupts are also handled by the IA-32 task.
+The reason is described later in this document.
+
+The second problem is a manual stack switching problem. In the original Linux
+kernel, an IA-32 CPU switches a stack from a user stack to a kernel stack on
+exceptions or interrupts. However, in Kernel Mode Linux, a user program
+may be executed in kernel mode and the CPU may not switch a stack.
+Therefore, in current Kernel Mode Linux implementation, the kernel switches
+a stack manually on exceptions and interrupts. To switch a stack, a kernel
+need to know a location of a kernel stack in an address space. However, on
+exceptions and interrupts, the kernel cannot use general registers (EAX, EBX,
+and so on). Therefore, it is very difficult to get the location of the kernel stack.
+
+To solve the above problem, the current Kernel Mode Linux implementation
+exploits a per CPU GDT. In Kernel Mode Linux, one segment descriptor of
+the per CPU GDT entries directly points to the location of the per-CPU TSS
+(Task State Segment). Thus, by using the segment descriptor, the address
+of the kernel stack can be available with only one general register.
+
+The third problem is an interrupt-lost problem on double fault exceptions.
+Let's assume that a user program is executed in kernel mode, and its ESP
+register points to a portion of memory space that has not been mapped to
+its address space yet. What will happen if an external interrupt is raised
+just in time? First, a CPU acks the request for the interrupt from an
+external interrupt controller. Then, the CPU tries to interrupt its execution
+of the user program. However, it can't because there is no stack to save
+the part of the execution context (see above "a stack starvation problem").
+Then, the CPU tries to generate a double fault exception and it succeeds
+because the Kernel Mode Linux implementation handles the double fault by the
+IA-32 task. The problem is that the double fault exception handler knows only
+the suspended user program and it cannot know the request for the interrupt
+because the CPU doesn't tell nothing about it. Therefore, the double fault
+handler directly resumes the user program and doesn't handle the interrupt,
+that is, the same kind of interrupts never be generated because the interrupt
+controller thinks that the previous interrupt has not been serviced by the CPU.
+
+To solve the interrupt-lost problem, the current Kernel Mode Linux implementation
+asks the interrupt controller for untreated interrupts and handles them at the
+end of the double fault exception handler. Asking the interrupt controller is a
+costly operation. However, the cost is negligible because double fault exceptions
+that is, page faults on memory stacks are not so often.
+
+The reason for handling non-maskable interrupts by the IA-32 tasks is closely
+related to the manual stack switching problem and the interrupt-lost problem.
+If an non-maskable interrupt occurs between when a maskable interrupt occurs and
+when a memory stack is switched from a user stack to a kernel stack, and the
+non-maskable interrupt causes a page fault on the memory stack, then the double
+fault exception handler handles the maskable interrupt because it has not been
+handled. The problem is that the double fault handler returns to the suspended
+interrupt handling routine and the routine tries to handle the already-handled
+maskable interrupt again.
+
+The above problem can be avoided by handling non-maskable interrupts with the
+IA-32 tasks, because no double fault exceptions are generated. Usually, non-maskable
+interrupts are very rare, so the cost of the IA-32 task mechanisms doesn't really
+matter. However, if an NMI watchdog is enabled for debugging purpose, performance
+degradation may be observed.
+
+One problem for handling non-maskable interrupts by the IA-32 task mechanism is
+a descriptor-tables inconsistency problem. When the IA-32 tasks are switched
+back and forth, all segment registers (CS, DS, ES, SS, FS, GS) and the local
+descriptor table register (LDTR) are reloaded (unlike the usual IA-32 trap/interrupt
+mechanism). Therefore, to switch the IA-32 task, the global descriptor table
+and the local descriptor table should be consistent, otherwise, the invalid TSS
+exception is raised and it is too complex to recover from the exception.
+The problem is that the consistency cannot be guaranteed because non-maskable
+interrupts are raised anytime and anywhere, that is, when updating the global
+descriptor table or the local descriptor table.
+
+To solve the above problem, the current Kernel Mode Linux implementation inserts
+instructions for saving and restoring FS, GS, and/or LDTR around the portion
+that manipulate the descriptor tables, if needed (CS, DS, ES are used exclusively
+by the kernel at that point, so there are no problems). Then, the non-maskable
+interrupt handler checks whether if FS, GS, and LDTR can be reloaded without problems,
+at the end of itself. If a problem is found, it reloads FS, GS, and/or LDTR with '0'
+(reloading FS, GS, and/or LDTR with '0' always succeeds). The reason why the above
+solution works is as follows. First, if a problem is found at reloading FS, GS,
+and/or LDTR, that means that a non-maskable interrupt occurs when modifying the
+descriptor tables. However, FS, GS, and/or LDTR are properly reloaded after the
+modification by the above mentioned instructions for restoring them. Therefore,
+just reloading FS, GS, and/or LDTR with '0' works because they will be reloaded
+soon after. Inserting the instructions may affect performance. Fortunately, however,
+FS, GS, and/or LDTR are usually reloaded after modifying the descriptor tables,
+so there are little points at that the instructions should be inserted.
+
+
+Implementation Notes for AMD64:
+(Now writing...)

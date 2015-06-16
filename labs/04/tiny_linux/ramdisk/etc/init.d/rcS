@@ -1,0 +1,29 @@
+#!/bin/sh
+
+/sbin/insmod /drivers/binfmt_script.ko
+/sbin/insmod /drivers/serio.ko
+/sbin/insmod /drivers/serial_core.ko
+/sbin/insmod /drivers/serport.ko
+/sbin/insmod /drivers/e1000.ko
+/sbin/insmod /drivers/8250.ko
+/sbin/insmod /drivers/8250_pci.ko
+/sbin/insmod /drivers/i8042.ko
+/sbin/insmod /drivers/libps2.ko
+/sbin/insmod /drivers/atkbd.ko
+
+
+mount proc
+mount -o remount,rw /
+mount -a
+
+clear                               
+echo "Linux is Booting"
+
+
+/sbin/ifconfig lo 127.0.0.1 up
+/sbin/route add 127.0.0.1 lo &
+
+ifconfig eth0 up
+ip addr add 10.0.2.15/24 dev eth0
+ip route add default via 10.0.2.2
+

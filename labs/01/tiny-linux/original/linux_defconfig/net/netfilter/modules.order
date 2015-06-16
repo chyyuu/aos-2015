@@ -1,0 +1,8 @@
+kernel/net/netfilter/nf_log_common.ko
+kernel/net/netfilter/nf_nat.ko
+kernel/net/netfilter/nf_nat_ftp.ko
+kernel/net/netfilter/nf_nat_irc.ko
+kernel/net/netfilter/nf_nat_sip.ko
+kernel/net/netfilter/xt_mark.ko
+kernel/net/netfilter/xt_nat.ko
+kernel/net/netfilter/xt_LOG.ko

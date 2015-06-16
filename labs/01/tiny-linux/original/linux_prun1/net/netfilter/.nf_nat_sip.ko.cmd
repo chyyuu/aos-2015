@@ -1,0 +1,1 @@
+cmd_net/netfilter/nf_nat_sip.ko := ld -r -m elf_x86_64 -T /home/child/my-linux/linux-4.0.4/scripts/module-common.lds --build-id  -o net/netfilter/nf_nat_sip.ko net/netfilter/nf_nat_sip.o net/netfilter/nf_nat_sip.mod.o

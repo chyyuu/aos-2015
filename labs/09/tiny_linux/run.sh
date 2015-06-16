@@ -1,0 +1,1 @@
+qemu-system-i386 -m 20 -kernel ./out/bzImage -initrd ./out/initramfs.cpio.gz

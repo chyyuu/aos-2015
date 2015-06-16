@@ -1,0 +1,1 @@
+cmd_drivers/video/logo/logo_linux_mono.c := scripts/pnmtologo -t mono -n logo_linux_mono -o drivers/video/logo/logo_linux_mono.c /home/child/my-linux/linux-4.0.4/drivers/video/logo/logo_linux_mono.pbm

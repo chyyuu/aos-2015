@@ -1,0 +1,1 @@
+/lib/ld-dir/ld-linux.so.2 --library-path /lib/ld-dir ./test_thread_need_libc

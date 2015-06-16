@@ -1,0 +1,1 @@
+cmd_drivers/iommu/built-in.o :=  ld -m elf_x86_64   -r -o drivers/iommu/built-in.o drivers/iommu/iommu.o drivers/iommu/iommu-traces.o drivers/iommu/iommu-sysfs.o drivers/iommu/iova.o drivers/iommu/amd_iommu.o drivers/iommu/amd_iommu_init.o drivers/iommu/dmar.o drivers/iommu/intel-iommu.o 

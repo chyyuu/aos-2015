@@ -1,0 +1,1 @@
+cmd_arch/x86/boot/compressed/vmlinux.bin.lzma := (cat arch/x86/boot/compressed/vmlinux.bin | lzma -9 && printf \\370\\164\\030\\000) > arch/x86/boot/compressed/vmlinux.bin.lzma || (rm -f arch/x86/boot/compressed/vmlinux.bin.lzma ; false)

@@ -1,0 +1,1 @@
+cmd_drivers/char/tpm/tpm.o := ld -m elf_i386   -r -o drivers/char/tpm/tpm.o drivers/char/tpm/tpm-interface.o drivers/char/tpm/tpm-dev.o drivers/char/tpm/tpm-sysfs.o drivers/char/tpm/tpm-chip.o drivers/char/tpm/tpm2-cmd.o drivers/char/tpm/tpm_ppi.o drivers/char/tpm/tpm_eventlog.o drivers/char/tpm/tpm_acpi.o 

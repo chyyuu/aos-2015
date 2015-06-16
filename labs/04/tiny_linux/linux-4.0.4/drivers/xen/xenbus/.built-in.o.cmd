@@ -1,0 +1,1 @@
+cmd_drivers/xen/xenbus/built-in.o :=  ld -m elf_x86_64   -r -o drivers/xen/xenbus/built-in.o drivers/xen/xenbus/xenbus.o drivers/xen/xenbus/xenbus_dev_frontend.o drivers/xen/xenbus/xenbus_dev_backend.o drivers/xen/xenbus/xenbus_probe_frontend.o 

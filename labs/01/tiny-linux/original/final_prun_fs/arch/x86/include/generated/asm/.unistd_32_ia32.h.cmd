@@ -1,0 +1,1 @@
+cmd_arch/x86/syscalls/../include/generated/asm/unistd_32_ia32.h := /bin/bash '/home/child/my-linux/linux-4.0.4/arch/x86/syscalls/syscallhdr.sh' '/home/child/my-linux/linux-4.0.4/arch/x86/syscalls/syscall_32.tbl' 'arch/x86/syscalls/../include/generated/asm/unistd_32_ia32.h' 'i386' 'ia32_' ''

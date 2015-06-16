@@ -1,0 +1,3 @@
+kernel/crypto/crypto.ko
+kernel/crypto/crypto_algapi.ko
+kernel/crypto/aes_generic.ko

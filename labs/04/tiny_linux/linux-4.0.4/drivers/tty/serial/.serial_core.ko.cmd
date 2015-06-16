@@ -1,0 +1,1 @@
+cmd_drivers/tty/serial/serial_core.ko := ld -r -m elf_i386 -T ./scripts/module-common.lds --build-id  -o drivers/tty/serial/serial_core.ko drivers/tty/serial/serial_core.o drivers/tty/serial/serial_core.mod.o

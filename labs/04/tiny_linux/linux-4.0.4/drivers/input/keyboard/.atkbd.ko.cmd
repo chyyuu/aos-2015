@@ -1,0 +1,1 @@
+cmd_drivers/input/keyboard/atkbd.ko := ld -r -m elf_i386 -T ./scripts/module-common.lds --build-id  -o drivers/input/keyboard/atkbd.ko drivers/input/keyboard/atkbd.o drivers/input/keyboard/atkbd.mod.o

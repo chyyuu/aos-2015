@@ -1,0 +1,16 @@
+1 王佩琪 x86-64 https://www.github.com/ChildIsTalent/tiny-linux
+2 杨松霖 x86-64 https://www.github.com/sunliymonkey/tiny_linux
+3 杨海宇 x86-32 没有kernel module https://github.com/ir193/tiny_linux
+4 彭小详 x86-32 用了kernel module,share 3 kernel mode linux https://github.com/pxx199181/tiny_linux/
+5 黄伟健 x86-64 https://github.com/weekend27/my_tiny_linux
+6 胡亚洲 x86-64 https://github.com/hyz1011088/AOS_LAB/
+7 曹睿东 x86-32 https://github.com/caoruidong/AOS
+8 黎军   x86-32 https://github.com/franklea/Tinylinux
+9 刘昊 smallnet 对网络栈优化系统的编译和精简，找到其修改的源文件，对比测试了wget的内存使用情况. https://github.com/lh50404797/tiny_linux
+# analysis kernel config
+10 高齐琦 Part4 https://github.com/clytze77/linux_conf_analysis_part4/blob/master/os_homework_part4.md
+11 刘学  Part1 https://github.com/moye2015/linux_conf_analysis/blob/master/os_homework.md#2
+12 曹立	Part3 http://github.com/beyonddd/mooc_os
+13 刘相	Part2 https://github.com/georgeliuChina/tiny_linux_analysis/blob/master/config%E9%85%8D%E7%BD%AE.config
+14 齐冰  https://github.com/qibingbuso/os
+

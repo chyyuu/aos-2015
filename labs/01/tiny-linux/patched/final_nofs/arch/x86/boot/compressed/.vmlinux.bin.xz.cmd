@@ -1,0 +1,1 @@
+cmd_arch/x86/boot/compressed/vmlinux.bin.xz := (cat arch/x86/boot/compressed/vmlinux.bin | sh /home/child/my-linux/linux-patched/scripts/xz_wrap.sh && printf \\100\\310\\077\\000) > arch/x86/boot/compressed/vmlinux.bin.xz || (rm -f arch/x86/boot/compressed/vmlinux.bin.xz ; false)

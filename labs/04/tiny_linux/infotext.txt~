@@ -1,0 +1,1 @@
+qemu-system-i386  -kernel linux-4.0.4/arch/x86/boot/bzImage  -initrd file_ram.cpio.lzma

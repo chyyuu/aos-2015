@@ -1,0 +1,1 @@
+cmd_arch/x86/kernel/cpu/microcode/built-in.o :=  ld -m elf_i386   -r -o arch/x86/kernel/cpu/microcode/built-in.o arch/x86/kernel/cpu/microcode/microcode.o arch/x86/kernel/cpu/microcode/core_early.o arch/x86/kernel/cpu/microcode/intel_early.o 

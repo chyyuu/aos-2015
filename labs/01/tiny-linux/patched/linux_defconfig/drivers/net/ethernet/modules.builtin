@@ -1,0 +1,6 @@
+kernel/drivers/net/ethernet/broadcom/tg3.ko
+kernel/drivers/net/ethernet/intel/e100.ko
+kernel/drivers/net/ethernet/intel/e1000/e1000.ko
+kernel/drivers/net/ethernet/marvell/sky2.ko
+kernel/drivers/net/ethernet/nvidia/forcedeth.ko
+kernel/drivers/net/ethernet/realtek/8139too.ko

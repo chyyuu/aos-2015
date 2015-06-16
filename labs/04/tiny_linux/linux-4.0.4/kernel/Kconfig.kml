@@ -1,0 +1,34 @@
+
+menu "Kernel Mode Linux"
+
+config KERNEL_MODE_LINUX
+        bool "Kernel Mode Linux"
+        ---help---
+          This enables Kernel Mode Linux. In Kernel Mode Linux, user programs
+          can be executed safely in kernel mode and access a kernel address space
+          directly. Thus, for example, costly mode switching between a user and a kernel
+          can be eliminated. If you say Y here, the kernel enables Kernel Mode Linux.
+
+          More information about Kernel Mode Linux can be found in the
+          <file:Documentation/kml.txt>
+
+          If you don't know what to do here, say N.
+
+config KML_CHECK_CHROOT
+        bool "Check for chroot"
+        default y
+        depends on KERNEL_MODE_LINUX
+        ---help---
+          This enables the check for the current root file system being chrooted
+          when executing user processes in kernel mode. In the current KML
+          implementation, programs in the dicretory "/trusted" are executed in
+          kernel mode. Therefore, the chroot check is necessary because,
+          if the root file system is chrooted to "/home/foo/",
+          programs in the directory "/home/foo/trusted" are accidentally executed in kernel mode.
+
+          If you don't know what to do here, say Y.
+
+comment "Safety check have not been implemented"
+depends on KERNEL_MODE_LINUX
+
+endmenu

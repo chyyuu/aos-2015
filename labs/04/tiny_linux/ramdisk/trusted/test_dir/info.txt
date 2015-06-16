@@ -1,0 +1,1 @@
+/trusted/lib/ld-linux.so.2 --library-path /trusted/lib ./test_thread_need_libc

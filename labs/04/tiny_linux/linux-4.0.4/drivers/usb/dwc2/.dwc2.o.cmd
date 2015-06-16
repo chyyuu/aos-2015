@@ -1,0 +1,1 @@
+cmd_drivers/usb/dwc2/dwc2.o := ld -m elf_x86_64   -r -o drivers/usb/dwc2/dwc2.o drivers/usb/dwc2/core.o drivers/usb/dwc2/core_intr.o drivers/usb/dwc2/hcd.o drivers/usb/dwc2/hcd_intr.o drivers/usb/dwc2/hcd_queue.o drivers/usb/dwc2/hcd_ddma.o 

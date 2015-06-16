@@ -1,0 +1,1 @@
+cmd_firmware/built-in.o :=  ld -m elf_x86_64   -r -o firmware/built-in.o firmware/e100/d101m_ucode.bin.gen.o firmware/e100/d101s_ucode.bin.gen.o firmware/e100/d102e_ucode.bin.gen.o firmware/tigon/tg3.bin.gen.o firmware/tigon/tg3_tso.bin.gen.o firmware/tigon/tg3_tso5.bin.gen.o 

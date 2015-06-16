@@ -1,0 +1,1 @@
+cmd_security/integrity/evm/evm.o := ld -m elf_x86_64   -r -o security/integrity/evm/evm.o security/integrity/evm/evm_main.o security/integrity/evm/evm_crypto.o security/integrity/evm/evm_secfs.o security/integrity/evm/evm_posix_acl.o 

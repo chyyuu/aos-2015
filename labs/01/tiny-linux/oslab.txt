@@ -1,0 +1,144 @@
+http://blog.csdn.net/ancjf/article/details/42172847
+1.下载busybox
+   http://www.busybox.net/downloads/
+2.busybox make menuconfig报错
+   如果您用的是Ubuntu系统 就安装这个包 sudo aptitab instab libncurses5-dev
+3. 启动起来/proc 和 /sys 文件夹为空
+   rsC中没有mount(具体见https://github.com/ir193/tiny_linux/blob/master/NOTE.md)
+4. qemu ip:can't find device 'eth0'
+？？？？？
+
+————————————————————————————————————————————————————————————————————-
+现在按照新的tutor重新做
+http://mgalgs.github.io/2015/05/16/how-to-build-a-custom-linux-kernel-for-qemu-2015-edition.html
+1.build busybox时报错
+要 keep source code clean
+根据它报的错在～／busybox-1.23.2 中，先make mrproper(我记不清了)，然后再进行make defconfig和make menuconfig
+
+2. 32位和64位的问题
+就统一用64位好了
+build kernel时，不用make O=../obj/linux_defconfig i386_defconfig
+直接用 make O=../obj/linux_defconfig defconfig
+我的机子是64位的
+
+要不然后面build busybox时，没有i386的参数（其实是不知道怎么添加参数，大神的note里面没写）
+
+3.关于eth0的问题
+两个教程相对比，除了busybox的rcS里面挂在的区别，可能导致该问题的原因就是，defconfig中，可能默认设置了什么
+第二个教程在busybox和linux编译中，都有一句make defconfig，而第一个中没有
+
+
+config
+
+Support for basic start up and debug log:
+
+    64-bit kernel
+
+    General setup ---> Initial RAM filesystem and RAM disk (initramfs/initrd) support 
+                       Support initial ramdisks compressed using gzip 
+                       Optimize for size
+                       Configure standard kernel features (expert users) --> Enable PCI quitk workarounds
+
+    Executable file formats / Emulations ---> Kernel support for ELF binaries 
+                                              Kernel support for scripts starting with #!
+
+Support Ethernet card:
+
+    Bus options (PCI etc.) ---> PCI support
+
+    Networking support --> Networking options --> TCP/IP networking
+
+    Device Drivers --> Network device --> Ethernet driver support --> Intel(R) PRO/1000 PCI-Express Gigabit Ethernet support
+                   --> Character devices --> Enable TTY
+
+
+
+1.退出无图形界面
+ctrl + a then c
+(qemu)quit
+2. 现在需内存 21.6M
+3. 加上proc
+ > File systems > Pseudo filesystems 
+
+ /proc file system support ───────────────────────┐
+  │ (there is a small number of Interrupt ReQuest lines in your computer    │  
+  │ that are used by the attached devices to gain the CPU's attention --    │  
+  │ often a source of trouble if two devices are mistakenly configured      │  
+  │ to use the same IRQ). The program procinfo to display some              │  
+  │ information about your system gathered from the /proc file system.      │  
+  │                                                                         │  
+  │ Before you can use the /proc file system, it has to be mounted,         │  
+  │ meaning it has to be given a location in the directory hierarchy.       │  
+  │ That location should be /proc. A command such as "mount -t proc proc    │  
+  │ /proc" or the equivalent line in /etc/fstab does the job.               │  
+  │                                                                         │  
+  │ The /proc file system is explained in the file                          │  
+  │ <file:Documentation/filesystems/proc.txt> and on the proc(5) manpage    │  
+  │ ("man 5 proc"). 
+  │ This option will enlarge your kernel by about 67 KB. Several            │  
+  │ programs depend on this, so everyone should say Y here.                 │  
+  │                                                                         │  
+  │ Symbol: PROC_FS [=n]                                                    │  
+  │ Type  : boolean                                                         │  
+  │ Prompt: /proc file system support                                       │  
+  │   Location:                                                             │  
+  │     -> File systems                                                     │  
+  │       -> Pseudo filesystems                                             │  
+  │   Defined at fs/proc/Kconfig:1                   
+
+4.generl setup
+ Kernel compression mode (LZMA)  ---> 749.6
+ Kernel compression mode (XZ)  ---> 729.6
+
+Choose SLAB allocator (SLOB (Simple Allocator))  --->
+SLAB SLOB SLUB
+http://blog.csdn.net/adaptiver/article/details/7042469
+
+
+
+5.关掉了printk
+关掉了dns解析（用ip地址即可）
+6. 嵌入式的那个选项变化已经不大了
+7.移动内核
+ > Executable file formats / Emulations ─
+<M> Kernel support for scripts starting with #!  
+
+ > Device Drivers > Network device support > Ethernet driver support  
+ <M>     Intel(R) PRO/1000 Gigabit Ethernet support  
+
+ > Device Drivers > Character devices > Serial drivers
+ <M> 8250/16550 and compatible serial support 
+
+问题所在：
+[*]   Console on 8250/16550 and compatible serial port 
+
+
+
+
+一些参考文章：
+内核态用户态
+http://www.cnblogs.com/longdouhzt/archive/2012/10/13/2722969.html
+http://blog.csdn.net/skywalkzf/article/details/5185442
+http://blog.chinaunix.net/uid-1829236-id-3182279.html
+http://www.cnblogs.com/akira90/archive/2013/05/30/3109374.html
+http://www.educity.cn/linux/1603717.html
+http://www.kerneltravel.net/jiaoliu/005.htm
+http://blog.csdn.net/kennyrose/article/details/7533534
+http://www.cnblogs.com/elnino/p/4342477.html
+http://oss.org.cn/kernel-book/ch04/4.3.htm
+
+qemu monitor
+http://www.ibm.com/developerworks/cn/linux/l-cn-qemu-monitor/
+
+压缩比较
+http://blog.csdn.net/waverider2012/article/details/8514949
+
+slab slob slub
+http://blog.csdn.net/adaptiver/article/details/7042469
+http://www.ibm.com/developerworks/cn/linux/l-linux-slab-allocator/
+
+github
+https://github.com/ir193/tiny_linux/blob/master/NOTE.md
+https://github.com/SunliyMonkey/tiny_linux
+https://github.com/pxx199181/tiny_linux
+

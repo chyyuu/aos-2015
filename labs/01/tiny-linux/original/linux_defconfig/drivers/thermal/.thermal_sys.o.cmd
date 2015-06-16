@@ -1,0 +1,1 @@
+cmd_drivers/thermal/thermal_sys.o := ld -m elf_x86_64   -r -o drivers/thermal/thermal_sys.o drivers/thermal/thermal_core.o drivers/thermal/thermal_hwmon.o drivers/thermal/step_wise.o drivers/thermal/user_space.o 
